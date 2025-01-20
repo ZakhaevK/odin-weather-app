@@ -1,0 +1,16 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(221, 212, 183);
+  margin: 30px;
+}
+
+header {
+  padding-bottom: 5px;
+}
+
+button:disabled {
+  background-color: darkred;
+  color: white;
+}
