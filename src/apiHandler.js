@@ -1,10 +1,11 @@
-export { getGif };
+export { getWeatherData, getGif };
 
-const img = document.querySelector("img");
-const vcAPIKey = "3P8UXB5Q9KNGWUVT3F6XAYE9D"
+const vcAPIKey = "3P8UXB5Q9KNGWUVT3F6XAYE9D";
 const giphyAPIKey = "jIO30gVQ39v9A5u6L9moexe2hnpNyQpo";
 
 async function getWeatherData(location) {
+  // May move replaceAll's to the relevant event listener.
+  location = location.replaceAll(" ", "%20");
   const response = await fetch(
     `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?key=${vcAPIKey}`,
     { mode: "cors" },
@@ -13,6 +14,7 @@ async function getWeatherData(location) {
 }
 
 async function getGif(searchterm) {
+  searchterm = searchterm.replaceAll(" ", "%20");
   const response = await fetch(
     `https://api.giphy.com/v1/gifs/translate?api_key=${giphyAPIKey}&s=${searchterm}&weirdness=2`,
     { mode: "cors" },
@@ -20,10 +22,9 @@ async function getGif(searchterm) {
   const gifData = await response.json();
 
   if (!gifData.data.images) {
-    img.src =
-      "https://cdn.pixabay.com/photo/2017/02/12/21/29/false-2061131_960_720.png";
     console.log("No image found");
+    return "https://cdn.pixabay.com/photo/2017/02/12/21/29/false-2061131_960_720.png";
   } else {
-    img.src = gifData.data.images.original.url;
+    return gifData.data.images.original.url;
   }
 }
