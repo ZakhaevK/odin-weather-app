@@ -11,6 +11,7 @@ async function getWeatherData(location) {
     { mode: "cors" },
   );
   const weatherData = await response.json();
+  console.log(weatherData);
 }
 
 async function getGif(searchterm) {
@@ -25,6 +26,7 @@ async function getGif(searchterm) {
     console.log("No image found");
     return "https://cdn.pixabay.com/photo/2017/02/12/21/29/false-2061131_960_720.png";
   } else {
+    console.log(gifData.data.images.original.url);
     return gifData.data.images.original.url;
   }
 }
