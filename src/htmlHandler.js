@@ -9,7 +9,7 @@ const weatherGif = document.getElementById("weather-gif");
 async function initialiseApp() {
   searchButt.addEventListener("click", async (e) => {
     e.preventDefault();
-    const gif = await getGif("placeholder");
+    const gif = await getGif(searchBar.value);
     weatherGif.src = gif;
   })
 }
