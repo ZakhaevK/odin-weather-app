@@ -8,13 +8,13 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgb(221, 212, 183);
+  background-color: var(--content-color);
 }
 
 #header {
   display: flex;
   padding-bottom: 5px;
-  height: 180px;
+  height: 140px;
   width: 100%;
   background-color: var(--header-color);
   color: var(--text-color);
@@ -24,13 +24,13 @@ body {
 
 #header h1 {
   position: relative;
-  font-size: 3.5rem;
+  font-size: 3rem;
   top: 5px;
 }
 
 #content {
-  display: grid;
-  grid-template-columns: auto;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
@@ -40,9 +40,44 @@ body {
   color: var(--text-color);
 }
 
-p {
+
+#result-div {
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  flex-direction: column;
+  /* padding-top: 30px; */
+  /* gap:18px */
+}
+
+img {
+  margin-top: 20px;
+  max-height: 300px;
+}
+
+#search-div p {
   padding: 0px;
   margin: 7px 0px;
+}
+
+#weather-details {
+  font-size: 1rem;
+  display: grid;
+  min-width: 205px;
+  grid-template-columns: 100px 200px;
+  gap: 10px;
+  background-color: var(--header-color);
+  border-radius: 15px;
+  padding: 10px
+  /* justify-items: end; */
+}
+
+#weather-details p {
+  margin: 0;
+}
+
+#weather-details p:nth-of-type(2n) {
+  justify-self: end;
 }
 
 button:disabled {

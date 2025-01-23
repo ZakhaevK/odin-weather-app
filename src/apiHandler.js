@@ -11,12 +11,20 @@ async function getWeatherData(location) {
     { mode: "cors" },
   );
   const weatherData = await response.json();
-  const returnData = [
-    weatherData.resolvedAddress,
-    weatherData.currentConditions.datetime,
-    weatherData.currentConditions.temp,
-    (weatherData.currentConditions.conditions).toLowerCase(),
-  ];
+  console.log(weatherData);
+  const returnData = {
+    address: weatherData.resolvedAddress,
+    datetime: weatherData.currentConditions.datetime,
+    tempF: weatherData.currentConditions.temp,
+    tempC: toCelsius(weatherData.currentConditions.temp),
+    feelslikeF: weatherData.currentConditions.feelslike,
+    feelslikeC: toCelsius(weatherData.currentConditions.feelslike),
+    conditions: weatherData.currentConditions.conditions,
+    humidity: weatherData.currentConditions.humidity,
+    sunrise: weatherData.currentConditions.sunrise,
+    sunset: weatherData.currentConditions.sunset,
+  };
+
   return await returnData;
 }
 
@@ -36,4 +44,8 @@ async function getGif(searchTerm) {
     console.log(gifData.data.images.original.url);
     return gifData.data.images.original.url;
   }
+}
+
+function toCelsius(deg) {
+  return (((deg - 32) * 5) / 9).toFixed(2);
 }
