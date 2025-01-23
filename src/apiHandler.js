@@ -14,7 +14,7 @@ async function getWeatherData(location) {
   const returnData = [
     weatherData.resolvedAddress,
     weatherData.currentConditions.datetime,
-    fahrenheitToCelsius(weatherData.currentConditions.temp),
+    weatherData.currentConditions.temp,
     (weatherData.currentConditions.conditions).toLowerCase(),
   ];
   return await returnData;
@@ -36,8 +36,4 @@ async function getGif(searchTerm) {
     console.log(gifData.data.images.original.url);
     return gifData.data.images.original.url;
   }
-}
-
-function fahrenheitToCelsius(deg) {
-  return (((deg - 32) * 5/9)).toFixed(2);
 }
