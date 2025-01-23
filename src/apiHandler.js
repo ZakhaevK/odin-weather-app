@@ -11,16 +11,23 @@ async function getWeatherData(location) {
     { mode: "cors" },
   );
   const weatherData = await response.json();
-  console.log(weatherData);
+  const returnData = [
+    weatherData.resolvedAddress,
+    weatherData.currentConditions.datetime,
+    fahrenheitToCelsius(weatherData.currentConditions.temp),
+    (weatherData.currentConditions.conditions).toLowerCase(),
+  ];
+  return await returnData;
 }
 
-async function getGif(searchterm) {
-  searchterm = searchterm.replaceAll(" ", "%20");
+async function getGif(searchTerm) {
+  searchTerm = searchTerm.replaceAll(" ", "%20");
   const response = await fetch(
-    `https://api.giphy.com/v1/gifs/translate?api_key=${giphyAPIKey}&s=${searchterm}&weirdness=2`,
+    `https://api.giphy.com/v1/gifs/translate?api_key=${giphyAPIKey}&s=${searchTerm}&weirdness=2`,
     { mode: "cors" },
   );
   const gifData = await response.json();
+  console.log(gifData);
 
   if (!gifData.data.images) {
     console.log("No image found");
@@ -29,4 +36,8 @@ async function getGif(searchterm) {
     console.log(gifData.data.images.original.url);
     return gifData.data.images.original.url;
   }
+}
+
+function fahrenheitToCelsius(deg) {
+  return (((deg - 32) * 5/9)).toFixed(2);
 }
