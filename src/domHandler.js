@@ -11,21 +11,32 @@ async function initialiseApp() {
   searchButt.addEventListener("click", async (e) => {
     resultDiv.replaceChildren("");
     e.preventDefault();
+
+    const loadDiv = document.createElement("div");
+    loadDiv.id = "result-loading";
+    loadDiv.textContent = "Loading...";
+    // window.setTimeout(() => {loadDiv.classList.toggle("show");}, 300);
+
+    resultDiv.appendChild(loadDiv);
     const weatherResult = await getWeatherData(searchBar.value);
     const searchStr = await getWeatherSearch(weatherResult);
     const gif = await getGif(searchStr);
 
-    await console.log(weatherResult);
+    Promise.all(searchStr, gif).then(async () => {
+      const weatherGif = document.createElement("img");
+      weatherGif.src = gif;
+      displayWeather(weatherResult, checkCelsius.checked);
+      resultDiv.appendChild(weatherGif);
+      // window.setTimeout(() => {
+        loadDiv.classList.toggle("hide");
+      // }, 3000);
+    });
 
-    const weatherGif = document.createElement("img");
-    weatherGif.src = gif;
-    displayWeather(weatherResult, checkCelsius.checked);
-    resultDiv.appendChild(weatherGif);
+    console.log(weatherResult);
   });
 }
 
 function displayWeather(weatherData, celsius) {
-
   const locationPara = document.createElement("p");
   locationPara.textContent = weatherData.address;
 
@@ -98,7 +109,6 @@ function displayWeather(weatherData, celsius) {
 
   resultDiv.appendChild(locationPara);
   resultDiv.appendChild(weatherDetails);
-  
 }
 
 function getWeatherSearch(weatherData) {
@@ -114,7 +124,7 @@ function getWeatherSearch(weatherData) {
     weatherStr += "cool weather";
   } else if (temp > 82.4) {
     weatherStr += "hot weather";
-  } else if (cond.includes("overcast")) {
+  } else if (cond.includes("Overcast")) {
     weatherStr += "cloudy weather";
   } else {
     weatherStr += "clear sky";
