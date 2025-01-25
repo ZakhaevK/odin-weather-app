@@ -4,38 +4,44 @@ export { initialiseApp };
 const searchBar = document.getElementById("search-addr");
 const searchButt = document.getElementById("search-butt");
 const checkCelsius = document.getElementById("search-cels");
-// const weatherDetails = document.getElementById("weather-details");
 const resultDiv = document.getElementById("result-div");
 
 async function initialiseApp() {
   searchButt.addEventListener("click", async (e) => {
+    // Disable button from taking further input during retrieval
+    searchButt.toggleAttribute("disabled");
     resultDiv.replaceChildren("");
     e.preventDefault();
 
+    // Loading div for user
     const loadDiv = document.createElement("div");
     loadDiv.id = "result-loading";
     loadDiv.textContent = "Loading...";
-    // window.setTimeout(() => {loadDiv.classList.toggle("show");}, 300);
-
     resultDiv.appendChild(loadDiv);
-    const weatherResult = await getWeatherData(searchBar.value);
-    const searchStr = await getWeatherSearch(weatherResult);
-    const gif = await getGif(searchStr);
 
-    Promise.all(searchStr, gif).then(async () => {
-      const weatherGif = document.createElement("img");
-      weatherGif.src = gif;
-      displayWeather(weatherResult, checkCelsius.checked);
-      resultDiv.appendChild(weatherGif);
-      // window.setTimeout(() => {
+    // Call of API's and error catching
+    try {
+      const weatherResult = await getWeatherData(searchBar.value);
+      const searchStr = getWeatherSearch(weatherResult);
+      const gif = await getGif(searchStr);
+
+      Promise.all(searchStr, gif).then(() => {
+        const weatherGif = document.createElement("img");
+        weatherGif.src = gif;
+        displayWeather(weatherResult, checkCelsius.checked);
+        resultDiv.appendChild(weatherGif);
         loadDiv.classList.toggle("hide");
-      // }, 3000);
-    });
-
-    console.log(weatherResult);
+        searchButt.toggleAttribute("disabled");
+      });
+    } catch (err) {
+      console.log(err);
+      loadDiv.textContent = "Error retrieving data.";
+      searchButt.toggleAttribute("disabled");
+    }
   });
 }
 
+// Handles weather data display in DOM
 function displayWeather(weatherData, celsius) {
   const locationPara = document.createElement("p");
   locationPara.textContent = weatherData.address;
@@ -44,7 +50,7 @@ function displayWeather(weatherData, celsius) {
   weatherDetails.id = "weather-details";
 
   const dateTime = document.createElement("p");
-  dateTime.textContent = "Date/Time:";
+  dateTime.textContent = "Local Time:";
   const dateTimeVal = document.createElement("p");
   dateTimeVal.textContent = weatherData.datetime;
 
@@ -111,6 +117,7 @@ function displayWeather(weatherData, celsius) {
   resultDiv.appendChild(weatherDetails);
 }
 
+// Finds a string based on weather details, is used for gif search
 function getWeatherSearch(weatherData) {
   let weatherStr = "";
   const temp = weatherData.tempF;

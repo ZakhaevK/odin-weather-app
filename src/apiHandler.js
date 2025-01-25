@@ -3,8 +3,8 @@ export { getWeatherData, getGif };
 const vcAPIKey = "3P8UXB5Q9KNGWUVT3F6XAYE9D";
 const giphyAPIKey = "jIO30gVQ39v9A5u6L9moexe2hnpNyQpo";
 
+// Fetch weather data from visualcrossing, then returns an object with useful data
 async function getWeatherData(location) {
-  // May move replaceAll's to the relevant event listener.
   location = location.replaceAll(" ", "%20");
   const response = await fetch(
     `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${location}?key=${vcAPIKey}`,
@@ -28,6 +28,7 @@ async function getWeatherData(location) {
   return await returnData;
 }
 
+// Fetch a gif from giphy based on a string, and return the url for display
 async function getGif(searchTerm) {
   searchTerm = searchTerm.replaceAll(" ", "%20");
   const response = await fetch(
@@ -46,6 +47,7 @@ async function getGif(searchTerm) {
   }
 }
 
+// Used for weather object data
 function toCelsius(deg) {
   return (((deg - 32) * 5) / 9).toFixed(2);
 }
